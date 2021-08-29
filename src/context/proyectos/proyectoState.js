@@ -6,6 +6,7 @@ import {
   FORMULARIO_PROYECTO,
   OBTENER_PROYECTO,
   AGREGAR_PROYECTO,
+  PROYECTO_ACTUAL,
   VALIDAR_FORM
 } from '../../types';
 
@@ -13,7 +14,8 @@ const ProyectoState = props => {
   const initialState = {
     proyectos: [],
     formulario: false,
-    errorform: false
+    errorform: false,
+    proyecto: null
   };
 
   const [state, dispatch] = useReducer(proyectoReducer, initialState);
@@ -51,16 +53,25 @@ const ProyectoState = props => {
     });
   };
 
+  const currentProject = proyectoId => {
+    dispatch({
+      type: PROYECTO_ACTUAL,
+      payload: proyectoId
+    });
+  };
+
   return (
     <proyectoContext.Provider
       value={{
         proyectos: state.proyectos,
         formulario: state.formulario,
         errorform: state.errorform,
+        proyecto: state.proyecto,
         showForm,
         getProjects,
         addProject,
-        showError
+        showError,
+        currentProject
       }}
     >
       {props.children}
