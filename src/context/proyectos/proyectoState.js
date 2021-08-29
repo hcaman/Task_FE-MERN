@@ -1,7 +1,12 @@
 import React, { useReducer } from 'react';
+import { v4 as uuid } from 'uuid';
 import proyectoContext from './proyectoContext';
 import proyectoReducer from './proyectoReducer';
-import { FORMULARIO_PROYECTO, OBTENER_PROYECTO } from '../../types';
+import {
+  FORMULARIO_PROYECTO,
+  OBTENER_PROYECTO,
+  AGREGAR_PROYECTO
+} from '../../types';
 
 const ProyectoState = props => {
   const initialState = {
@@ -30,13 +35,22 @@ const ProyectoState = props => {
     });
   };
 
+  const addProject = proyecto => {
+    proyecto.id = uuid();
+    dispatch({
+      type: AGREGAR_PROYECTO,
+      payload: proyecto
+    });
+  };
+
   return (
     <proyectoContext.Provider
       value={{
         proyectos: state.proyectos,
         formulario: state.formulario,
         showForm,
-        getProjects
+        getProjects,
+        addProject
       }}
     >
       {props.children}
