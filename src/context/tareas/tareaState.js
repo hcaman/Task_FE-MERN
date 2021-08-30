@@ -5,7 +5,7 @@ import TareaReducer from './tareaReducer';
 import { TAREAS_PROYECTO } from '../../types';
 
 const TareaState = (props) => {
-  const tareasProyecto = [
+  const tareasProyectos = [
     { id: 1, proyectoId: 1, nombre: 'Elegir plataforma', estado: true },
     { id: 2, proyectoId: 2, nombre: 'Elegir colores', estado: false },
     {
@@ -27,7 +27,8 @@ const TareaState = (props) => {
   ];
 
   const initialState = {
-    tareas: tareasProyecto,
+    tareas: tareasProyectos,
+    tareasproyecto: null,
   };
 
   const [state, dispatch] = useReducer(TareaReducer, initialState);
@@ -40,7 +41,13 @@ const TareaState = (props) => {
   };
 
   return (
-    <tareaContext.Provider value={{ tareas: state.tareas, getTareas }}>
+    <tareaContext.Provider
+      value={{
+        tareas: state.tareas,
+        tareasproyecto: state.tareasproyecto,
+        getTareas,
+      }}
+    >
       {props.children}
     </tareaContext.Provider>
   );
