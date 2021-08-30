@@ -11,6 +11,7 @@ import {
   CERRAR_SESION,
 } from '../../types';
 import clienteAxios from '../../config/axios';
+import tokenAuth from '../../config/token';
 
 const AuthState = (props) => {
   const initialState = {
@@ -32,6 +33,7 @@ const AuthState = (props) => {
         type: REGISTRO_EXITOSO,
         payload: respuesta.data,
       });
+      authUser();
     } catch (error) {
       // console.log(error);
       const alerta = {
@@ -45,6 +47,30 @@ const AuthState = (props) => {
     }
   };
 
+  const authUser = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      tokenAuth(token);
+    }
+    try {
+      const respuesta = await clienteAxios.get('/api/auth');
+      // console.log(respuesta);
+      dispatch({
+        type: OBTENER_USUARIO,
+        payload: respuesta.data.usuario,
+      });
+    } catch (error) {
+      const alerta = {
+        msg: error.response.data.msg,
+        categoria: 'alerta-error',
+      };
+      dispatch({
+        type: LOGIN_ERROR,
+        payload: alerta,
+      });
+    }
+  };
+
   return (
     <authContext.Provider
       value={{
@@ -53,6 +79,7 @@ const AuthState = (props) => {
         usuario: state.usuario,
         mensaje: state.mensaje,
         registerUser,
+        authUser,
       }}
     >
       {props.children}
