@@ -10,6 +10,7 @@ import {
   OBTENER_USUARIO,
   CERRAR_SESION,
 } from '../../types';
+import clienteAxios from '../../config/axios';
 
 const AuthState = (props) => {
   const initialState = {
@@ -21,6 +22,23 @@ const AuthState = (props) => {
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  const registerUser = async (datos) => {
+    try {
+      const respuesta = await clienteAxios.post('/api/users', datos);
+
+      console.log(respuesta);
+
+      dispatch({
+        type: REGISTRO_EXITOSO,
+      });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: REGISTRO_ERROR,
+      });
+    }
+  };
+
   return (
     <authContext.Provider
       value={{
@@ -28,6 +46,7 @@ const AuthState = (props) => {
         autenticado: state.autenticado,
         usuario: state.usuario,
         mensaje: state.mensaje,
+        registerUser,
       }}
     >
       {props.children}
