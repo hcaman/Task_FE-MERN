@@ -10,7 +10,7 @@ const AlertaState = (props) => {
   };
   const [state, dispatch] = useReducer(alertaReducer, initialState);
 
-  const mostrarAlerta = (msg, categoria) => {
+  const showAlert = (msg, categoria) => {
     dispatch({
       type: MOSTRAR_ALERTA,
       payload: { msg, categoria },
@@ -26,8 +26,8 @@ const AlertaState = (props) => {
   return (
     <alertaContext.Provider
       value={{
-        alerta,
-        mostrarAlerta,
+        alerta: state.alerta,
+        showAlert,
       }}
     >
       {props.children}
