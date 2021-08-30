@@ -1,29 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import AlertaContext from '../../context/alertas/alertaContext';
 
 const NuevaCuenta = () => {
+  const alertContext = useContext(AlertaContext);
+  const { alerta, showAlert } = alertContext;
+
   const [usuario, setUsuario] = useState({
     nombre: '',
     email: '',
     password: '',
-    confirmar: ''
+    confirmar: '',
   });
 
   const { nombre, email, password, confirmar } = usuario;
 
-  const onChange = e => {
+  const onChange = (e) => {
     setUsuario({
       ...usuario,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      nombre.trim() === '' ||
+      email.trim() === '' ||
+      password.trim() === '' ||
+      confirmar.trim() === ''
+    ) {
+      showAlert('Todos los campos son obligatorios', 'alerta-error');
+      return;
+    }
+
+    if (password.length < 6) {
+      showAlert(
+        'El password debe ser de al menos 6 caracteres',
+        'alerta-error'
+      );
+      return;
+    }
+
+    if (password !== confirmar) {
+      showAlert('Los password no son iguales', 'alerta-error');
+      return;
+    }
   };
 
   return (
     <div className="form-usuario">
+      {alerta && (
+        <div className={`alerta ${alerta.categoria}`}>{alerta.msg}</div>
+      )}
+
       <div className="contenedor-form sombra-dark">
         <h1>Registrarse</h1>
         <form onSubmit={onSubmit}>
