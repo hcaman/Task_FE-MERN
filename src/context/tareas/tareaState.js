@@ -2,7 +2,12 @@ import React, { useReducer } from 'react';
 import { v4 as uuid } from 'uuid';
 import tareaContext from './tareaContext';
 import TareaReducer from './tareaReducer';
-import { TAREAS_PROYECTO, AGREGAR_TAREA, VALIDAR_TAREA } from '../../types';
+import {
+  TAREAS_PROYECTO,
+  AGREGAR_TAREA,
+  VALIDAR_TAREA,
+  ELIMINAR_TAREA,
+} from '../../types';
 
 const TareaState = (props) => {
   const tareasProyectos = [
@@ -15,15 +20,15 @@ const TareaState = (props) => {
       estado: false,
     },
     { id: 4, proyectoId: 4, nombre: 'Elegir hosting', estado: true },
-    { id: 1, proyectoId: 4, nombre: 'Elegir plataforma', estado: true },
-    { id: 2, proyectoId: 3, nombre: 'Elegir colores', estado: false },
+    { id: 5, proyectoId: 4, nombre: 'Elegir plataforma', estado: true },
+    { id: 6, proyectoId: 3, nombre: 'Elegir colores', estado: false },
     {
-      id: 3,
+      id: 7,
       proyectoId: 2,
       nombre: 'Elegir plataforma de pago',
       estado: false,
     },
-    { id: 4, proyectoId: 1, nombre: 'Elegir hosting', estado: true },
+    { id: 8, proyectoId: 1, nombre: 'Elegir hosting', estado: true },
   ];
 
   const initialState = {
@@ -55,6 +60,13 @@ const TareaState = (props) => {
     });
   };
 
+  const deleteTarea = (id) => {
+    dispatch({
+      type: ELIMINAR_TAREA,
+      payload: id,
+    });
+  };
+
   return (
     <tareaContext.Provider
       value={{
@@ -64,6 +76,7 @@ const TareaState = (props) => {
         getTareas,
         addTarea,
         validarTarea,
+        deleteTarea,
       }}
     >
       {props.children}
