@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import { v4 as uuid } from 'uuid';
 import tareaContext from './tareaContext';
-import TareaReducer from './tareaReducer';
+import tareaReducer from './tareaReducer';
 import {
   TAREAS_PROYECTO,
   AGREGAR_TAREA,
@@ -42,7 +42,7 @@ const TareaState = (props) => {
     tareaseleccionada: null,
   };
 
-  const [state, dispatch] = useReducer(TareaReducer, initialState);
+  const [state, dispatch] = useReducer(tareaReducer, initialState);
 
   const getTareas = (proyectoId) => {
     dispatch({
