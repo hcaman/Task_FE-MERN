@@ -1,13 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AlertaContext from '../../context/alertas/alertaContext';
 import AuthContext from '../../context/autenticacion/authContext';
 
-const NuevaCuenta = () => {
+const NuevaCuenta = ({ history }) => {
   const alertContext = useContext(AlertaContext);
   const { alerta, showAlert } = alertContext;
   const authsContext = useContext(AuthContext);
-  const { registerUser } = authsContext;
+  const { autenticado, mensaje, registerUser } = authsContext;
 
   const [usuario, setUsuario] = useState({
     nombre: '',
@@ -17,6 +17,15 @@ const NuevaCuenta = () => {
   });
 
   const { nombre, email, password, confirmar } = usuario;
+
+  useEffect(() => {
+    if (autenticado) {
+      history.push('/proyectos');
+    }
+    if (mensaje) {
+      showAlert(mensaje.msg, mensaje.categoria);
+    }
+  }, [mensaje, autenticado, history]);
 
   const onChange = (e) => {
     setUsuario({
@@ -50,6 +59,7 @@ const NuevaCuenta = () => {
       showAlert('Los password no son iguales', 'alerta-error');
       return;
     }
+
     registerUser({ nombre, email, password });
   };
 
