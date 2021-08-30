@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import proyectoContext from '../../context/proyectos/proyectoContext';
 import tareaContext from '../../context/tareas/tareaContext';
 
@@ -7,7 +7,23 @@ const FormTarea = () => {
   const { proyecto } = proyectosContext;
 
   const tareasContext = useContext(tareaContext);
-  const { addTarea, validarTarea, errortarea, getTareas } = tareasContext;
+  const {
+    addTarea,
+    validarTarea,
+    errortarea,
+    getTareas,
+    tareaseleccionada,
+    updateTarea,
+    cleanTareaSelected,
+  } = tareasContext;
+
+  useEffect(() => {
+    if (tareaseleccionada !== null) {
+      setTarea(tareaseleccionada);
+    } else {
+      setTarea({ nombre: '' });
+    }
+  }, [tareaseleccionada]);
 
   const [tarea, setTarea] = useState({ nombre: '' });
 
@@ -31,9 +47,14 @@ const FormTarea = () => {
       return;
     }
 
-    tarea.proyectoId = proyectoActual.id;
-    tarea.estado = false;
-    addTarea(tarea);
+    if (tareaseleccionada === null) {
+      tarea.proyectoId = proyectoActual.id;
+      tarea.estado = false;
+      addTarea(tarea);
+    } else {
+      updateTarea(tarea);
+      cleanTareaSelected();
+    }
 
     getTareas(proyectoActual.id);
 
@@ -57,7 +78,7 @@ const FormTarea = () => {
           <input
             type="submit"
             className="btn btn-primario btn-submit btn-block"
-            value="Agregar tarea"
+            value={tareaseleccionada ? 'Editar tarea' : 'Agregar tarea'}
           />
         </div>
       </form>

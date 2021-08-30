@@ -4,7 +4,8 @@ import proyectoContext from '../../context/proyectos/proyectoContext';
 
 const Tarea = ({ tarea }) => {
   const tareasContext = useContext(tareaContext);
-  const { deleteTarea, getTareas, changeStateTarea } = tareasContext;
+  const { deleteTarea, getTareas, changeStateTarea, setCurrentTarea } =
+    tareasContext;
 
   const proyectosContext = useContext(proyectoContext);
   const { proyecto } = proyectosContext;
@@ -24,6 +25,10 @@ const Tarea = ({ tarea }) => {
     changeStateTarea(tarea);
   };
 
+  const selectTask = () => {
+    setCurrentTarea(tarea);
+  };
+
   return (
     <li className="tarea sombra">
       <p>{tarea.nombre}</p>
@@ -39,7 +44,7 @@ const Tarea = ({ tarea }) => {
         )}
       </div>
       <div className="acciones">
-        <button type="button" className="btn btn-primario">
+        <button type="button" className="btn btn-primario" onClick={selectTask}>
           Editar
         </button>
         <button
