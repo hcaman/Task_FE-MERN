@@ -5,7 +5,7 @@ import Proyectos from './components/proyectos/Proyectos';
 
 import ProyectoState from './context/proyectos/proyectoState';
 import TareaState from './context/tareas/tareaState';
-import AlertaState from './context/tareas/alertaState';
+import AlertaState from './context/alertas/alertaState';
 
 function App() {
   return (
