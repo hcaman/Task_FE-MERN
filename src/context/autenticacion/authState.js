@@ -71,6 +71,32 @@ const AuthState = (props) => {
     }
   };
 
+  const loginUser = async (datos) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      tokenAuth(token);
+    }
+    try {
+      const respuesta = await clienteAxios.post('/api/auth', datos);
+      console.log(respuesta);
+      dispatch({
+        type: LOGIN_EXITOSO,
+        payload: respuesta.data,
+      });
+      authUser();
+    } catch (error) {
+      const alerta = {
+        msg: error.response.data.msg,
+        categoria: 'alerta-error',
+      };
+      console.log(error.response.data);
+      dispatch({
+        type: LOGIN_ERROR,
+        payload: alerta,
+      });
+    }
+  };
+
   return (
     <authContext.Provider
       value={{
@@ -80,6 +106,7 @@ const AuthState = (props) => {
         mensaje: state.mensaje,
         registerUser,
         authUser,
+        loginUser,
       }}
     >
       {props.children}
