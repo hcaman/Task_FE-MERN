@@ -6,7 +6,6 @@ import {
   AGREGAR_TAREA,
   VALIDAR_TAREA,
   ELIMINAR_TAREA,
-  ESTADO_TAREA,
   TAREA_ACTUAL,
   ACTUALIZAR_TAREA,
   LIMPIAR_TAREA,
@@ -55,18 +54,18 @@ const TareaState = (props) => {
     });
   };
 
-  const deleteTarea = (id) => {
-    dispatch({
-      type: ELIMINAR_TAREA,
-      payload: id,
+  const deleteTarea = async (id, proyecto) => {
+    await clienteAxios.delete(`/api/tareas/${id}`, {
+      params: { proyecto },
     });
-  };
-
-  const changeStateTarea = (tarea) => {
-    dispatch({
-      type: ESTADO_TAREA,
-      payload: tarea,
-    });
+    try {
+      dispatch({
+        type: ELIMINAR_TAREA,
+        payload: id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const setCurrentTarea = (tarea) => {
@@ -76,11 +75,20 @@ const TareaState = (props) => {
     });
   };
 
-  const updateTarea = (tarea) => {
-    dispatch({
-      type: ACTUALIZAR_TAREA,
-      payload: tarea,
-    });
+  const updateTarea = async (tarea) => {
+    try {
+      const resultado = await clienteAxios.put(
+        `/api/tareas/${tarea._id}`,
+        tarea
+      );
+
+      dispatch({
+        type: ACTUALIZAR_TAREA,
+        payload: resultado.data.tarea,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const cleanTareaSelected = () => {
@@ -100,7 +108,6 @@ const TareaState = (props) => {
         addTarea,
         validarTarea,
         deleteTarea,
-        changeStateTarea,
         setCurrentTarea,
         updateTarea,
         cleanTareaSelected,

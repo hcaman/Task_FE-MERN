@@ -4,7 +4,7 @@ import proyectoContext from '../../context/proyectos/proyectoContext';
 
 const Tarea = ({ tarea }) => {
   const tareasContext = useContext(tareaContext);
-  const { deleteTarea, getTareas, changeStateTarea, setCurrentTarea } =
+  const { deleteTarea, getTareas, updateTarea, setCurrentTarea } =
     tareasContext;
 
   const proyectosContext = useContext(proyectoContext);
@@ -12,7 +12,7 @@ const Tarea = ({ tarea }) => {
   const [proyectoActual] = proyecto;
 
   const tareaDelete = () => {
-    deleteTarea(tarea._id);
+    deleteTarea(tarea._id, proyectoActual._id);
     getTareas(proyectoActual._id);
   };
 
@@ -22,7 +22,7 @@ const Tarea = ({ tarea }) => {
     } else {
       tarea.estado = true;
     }
-    changeStateTarea(tarea);
+    updateTarea(tarea);
   };
 
   const selectTask = () => {
