@@ -25,6 +25,7 @@ const NuevaCuenta = ({ history }) => {
     if (mensaje) {
       showAlert(mensaje.msg, mensaje.categoria);
     }
+    // eslint-disable-next-line
   }, [mensaje, autenticado, history]);
 
   const onChange = (e) => {
