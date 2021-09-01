@@ -27,17 +27,13 @@ const AuthState = (props) => {
   const registerUser = async (datos) => {
     try {
       const respuesta = await clienteAxios.post('/api/users', datos);
-
-      // console.log('registerUser: ');
-      // console.log(respuesta);
-
       dispatch({
         type: REGISTRO_EXITOSO,
         payload: respuesta.data,
       });
       authUser();
     } catch (error) {
-      // console.log(error);
+      // console.log(error.response);
       const alerta = {
         msg: error.response.data.msg,
         categoria: 'alerta-error',
@@ -56,20 +52,14 @@ const AuthState = (props) => {
     }
     try {
       const respuesta = await clienteAxios.get('/api/auth');
-      // console.log('authUser: ');
-      // console.log(respuesta);
       dispatch({
         type: OBTENER_USUARIO,
         payload: respuesta.data,
       });
     } catch (error) {
-      const alerta = {
-        msg: error.response.data.msg,
-        categoria: 'alerta-error',
-      };
+      console.log(error.response);
       dispatch({
         type: LOGIN_ERROR,
-        payload: alerta,
       });
     }
   };
@@ -81,19 +71,17 @@ const AuthState = (props) => {
     }
     try {
       const respuesta = await clienteAxios.post('/api/auth', datos);
-      // console.log('loginUser: ');
-      // console.log(respuesta);
       dispatch({
         type: LOGIN_EXITOSO,
         payload: respuesta.data,
       });
       authUser();
     } catch (error) {
+      // console.log(error.response);
       const alerta = {
         msg: error.response.data.msg,
         categoria: 'alerta-error',
       };
-      // console.log(error.response.data);
       dispatch({
         type: LOGIN_ERROR,
         payload: alerta,
