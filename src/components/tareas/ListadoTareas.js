@@ -10,7 +10,7 @@ const ListadoTareas = () => {
 
   const tareasContext = useContext(tareaContext);
   const { tareasproyecto } = tareasContext;
-
+  console.log(tareasproyecto);
   if (!proyecto) return <h2>Selecciona un projecto</h2>;
 
   const [proyectoActual] = proyecto;
@@ -28,7 +28,7 @@ const ListadoTareas = () => {
         ) : (
           <TransitionGroup>
             {tareasproyecto.map((tarea) => (
-              <CSSTransition key={tarea.id} timeout={200} className="tarea">
+              <CSSTransition key={tarea._id} timeout={200} className="tarea">
                 <Tarea tarea={tarea} />
               </CSSTransition>
             ))}

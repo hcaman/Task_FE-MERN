@@ -12,8 +12,8 @@ const Tarea = ({ tarea }) => {
   const [proyectoActual] = proyecto;
 
   const tareaDelete = () => {
-    deleteTarea(tarea.id);
-    getTareas(proyectoActual.id);
+    deleteTarea(tarea._id);
+    getTareas(proyectoActual._id);
   };
 
   const cambiarEstado = () => {
