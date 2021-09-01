@@ -1,5 +1,4 @@
 import React, { useReducer } from 'react';
-import { v4 as uuid } from 'uuid';
 import proyectoContext from './proyectoContext';
 import proyectoReducer from './proyectoReducer';
 import {
@@ -51,7 +50,6 @@ const ProyectoState = (props) => {
   };
 
   const addProject = async (proyecto) => {
-    // proyecto.id = uuid();
     try {
       const resultado = await clienteAxios.post('/api/proyectos', proyecto);
       dispatch({
