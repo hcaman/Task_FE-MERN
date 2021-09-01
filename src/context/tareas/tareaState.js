@@ -1,5 +1,4 @@
 import React, { useReducer } from 'react';
-import { v4 as uuid } from 'uuid';
 import tareaContext from './tareaContext';
 import tareaReducer from './tareaReducer';
 import {
@@ -12,51 +11,42 @@ import {
   ACTUALIZAR_TAREA,
   LIMPIAR_TAREA,
 } from '../../types';
+import clienteAxios from '../../config/axios';
 
 const TareaState = (props) => {
-  const tareasProyectos = [
-    { id: 1, proyectoId: 1, nombre: 'Elegir plataforma', estado: true },
-    { id: 2, proyectoId: 2, nombre: 'Elegir colores', estado: false },
-    {
-      id: 3,
-      proyectoId: 3,
-      nombre: 'Elegir plataforma de pago',
-      estado: false,
-    },
-    { id: 4, proyectoId: 4, nombre: 'Elegir hosting', estado: true },
-    { id: 5, proyectoId: 4, nombre: 'Elegir plataforma', estado: true },
-    { id: 6, proyectoId: 3, nombre: 'Elegir colores', estado: false },
-    {
-      id: 7,
-      proyectoId: 2,
-      nombre: 'Elegir plataforma de pago',
-      estado: false,
-    },
-    { id: 8, proyectoId: 1, nombre: 'Elegir hosting', estado: true },
-  ];
-
   const initialState = {
-    tareas: tareasProyectos,
-    tareasproyecto: null,
+    tareasproyecto: [],
     errortarea: false,
     tareaseleccionada: null,
   };
 
   const [state, dispatch] = useReducer(tareaReducer, initialState);
 
-  const getTareas = (proyectoId) => {
-    dispatch({
-      type: TAREAS_PROYECTO,
-      payload: proyectoId,
-    });
+  const getTareas = async (proyecto) => {
+    try {
+      const resultado = await clienteAxios.get('/api/tareas', {
+        params: { proyecto },
+      });
+      // console.log(resultado);
+      dispatch({
+        type: TAREAS_PROYECTO,
+        payload: resultado.data.tareas,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const addTarea = (tarea) => {
-    tarea.id = uuid();
-    dispatch({
-      type: AGREGAR_TAREA,
-      payload: tarea,
-    });
+  const addTarea = async (tarea) => {
+    try {
+      await clienteAxios.post('/api/tareas', tarea);
+      dispatch({
+        type: AGREGAR_TAREA,
+        payload: tarea,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const validarTarea = () => {
