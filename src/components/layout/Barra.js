@@ -3,7 +3,7 @@ import authContext from '../../context/autenticacion/authContext';
 
 const Barra = () => {
   const authsContext = useContext(authContext);
-  const { autenticado, authUser, logoutUser } = authsContext;
+  const { usuario, authUser, logoutUser } = authsContext;
 
   useEffect(() => {
     authUser();
@@ -17,7 +17,7 @@ const Barra = () => {
         </p>
       )}
       <nav className="nav-principal">
-        {autenticado && (
+        {usuario && (
           <button
             className="btn btn-blank cerrar-sesion"
             onClick={() => logoutUser()}
