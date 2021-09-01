@@ -16,6 +16,7 @@ export default (state, action) => {
         ...state,
         autenticado: true,
         mensaje: null,
+        cargando: false,
       };
     case OBTENER_USUARIO:
       return {
@@ -26,12 +27,13 @@ export default (state, action) => {
     case REGISTRO_ERROR:
     case LOGIN_ERROR:
     case CERRAR_SESION:
-      localStorage.removeItem('token', action.payload.token);
+      localStorage.removeItem('token');
       return {
         ...state,
         token: null,
         usuario: null,
         autenticado: false,
+        cargando: false,
         mensaje: action.payload,
       };
     default:

@@ -19,6 +19,7 @@ const AuthState = (props) => {
     autenticado: null,
     usuario: null,
     mensaje: null,
+    cargando: true,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -27,6 +28,7 @@ const AuthState = (props) => {
     try {
       const respuesta = await clienteAxios.post('/api/users', datos);
 
+      // console.log('registerUser: ');
       // console.log(respuesta);
 
       dispatch({
@@ -54,10 +56,11 @@ const AuthState = (props) => {
     }
     try {
       const respuesta = await clienteAxios.get('/api/auth');
+      // console.log('authUser: ');
       // console.log(respuesta);
       dispatch({
         type: OBTENER_USUARIO,
-        payload: respuesta.data.usuario,
+        payload: respuesta.data,
       });
     } catch (error) {
       const alerta = {
@@ -78,7 +81,8 @@ const AuthState = (props) => {
     }
     try {
       const respuesta = await clienteAxios.post('/api/auth', datos);
-      console.log(respuesta);
+      // console.log('loginUser: ');
+      // console.log(respuesta);
       dispatch({
         type: LOGIN_EXITOSO,
         payload: respuesta.data,
@@ -89,7 +93,7 @@ const AuthState = (props) => {
         msg: error.response.data.msg,
         categoria: 'alerta-error',
       };
-      console.log(error.response.data);
+      // console.log(error.response.data);
       dispatch({
         type: LOGIN_ERROR,
         payload: alerta,
@@ -111,6 +115,7 @@ const AuthState = (props) => {
         autenticado: state.autenticado,
         usuario: state.usuario,
         mensaje: state.mensaje,
+        cargando: state.cargando,
         registerUser,
         authUser,
         loginUser,
