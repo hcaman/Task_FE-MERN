@@ -40,7 +40,7 @@ const Login = ({ history }) => {
       return;
     }
 
-    loginUser(email, password);
+    loginUser({ email, password });
   };
 
   return (
